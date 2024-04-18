@@ -30,12 +30,7 @@ export function SignIn() {
         password: formData.password,
       });
 
-      // Cookies.set('name', 'fhff')
-      // Alerting the user's role
-      // alert(data.user.role);
-      console.log(data, error);
-      // console.log(data.user.role);
-      // console.log(data.session.access_token);
+      console.error(data, error);
       Cookies.set("token", data.session.access_token);
       Cookies.set("uid", data.user.id);
       Cookies.set("email", data.user.email);
