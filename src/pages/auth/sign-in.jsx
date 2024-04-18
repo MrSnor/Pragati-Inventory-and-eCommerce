@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import supabase from "./supabaseClient";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import Cookies from "js-cookie";
 export function SignIn() {
@@ -19,6 +19,12 @@ export function SignIn() {
     email: "",
     password: "",
   });
+  // use ref to input demo email and password fields at the correct fields
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const demoEmail = import.meta.env.VITE_DEMO_LOGIN_EMAIL;
+  const demoPassword = import.meta.env.VITE_DEMO_LOGIN_PASS;
 
   // Function to handle sign in when form is submitted
   const handleSignIn = async (e) => {
@@ -30,12 +36,7 @@ export function SignIn() {
         password: formData.password,
       });
 
-      // Cookies.set('name', 'fhff')
-      // Alerting the user's role
-      // alert(data.user.role);
-      console.log(data, error);
-      // console.log(data.user.role);
-      // console.log(data.session.access_token);
+      console.error(data, error);
       Cookies.set("token", data.session.access_token);
       Cookies.set("uid", data.user.id);
       Cookies.set("email", data.user.email);
@@ -54,6 +55,18 @@ export function SignIn() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  // function to toggle password visibility
+  const togglePassword = (e) => {
+    const x = passwordRef.current.querySelector("input");
+    console.log(x.type);
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  };
+
   return (
     <>
       <img
@@ -82,6 +95,7 @@ export function SignIn() {
               name="email"
               onChange={handleChange}
               size="lg"
+              ref={emailRef}
             />
             {/* Password input field */}
             <Input
@@ -90,16 +104,37 @@ export function SignIn() {
               name="password"
               onChange={handleChange}
               size="lg"
+              ref={passwordRef}
             />
-            {/* Remember Me checkbox */}
+            {/* Toggle password visibility checkbox */}
             <div className="-ml-2.5">
-              <Checkbox label="Remember Me" />
+              <Checkbox label="Show password" onChange={togglePassword} />
             </div>
           </CardBody>
           <CardFooter className="pt-0">
             {/* Sign In button */}
             <Button variant="gradient" fullWidth onClick={handleSignIn}>
               Sign In
+            </Button>
+            {/* Demo sign in button */}
+            <Button
+              variant="gradient"
+              color="green"
+              fullWidth
+              className="mt-3"
+              onClick={() => {
+                // set the values in UI
+                emailRef.current.querySelector("input").value = demoEmail;
+                passwordRef.current.querySelector("input").value = demoPassword;
+
+                // set value in formdata
+                setFormData({
+                  email: demoEmail,
+                  password: demoPassword,
+                });
+              }}
+            >
+              Demo Sign In
             </Button>
             {/* Sign up link */}
             <Typography variant="small" className="mt-6 flex justify-center">
