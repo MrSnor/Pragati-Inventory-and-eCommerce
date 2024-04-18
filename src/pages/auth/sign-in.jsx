@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import supabase from "./supabaseClient";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import Cookies from "js-cookie";
 export function SignIn() {
@@ -19,6 +19,12 @@ export function SignIn() {
     email: "",
     password: "",
   });
+  // use ref to input demo email and password fields at the correct fields
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const demoEmail = import.meta.env.VITE_DEMO_LOGIN_EMAIL;
+  const demoPassword = import.meta.env.VITE_DEMO_LOGIN_PASS;
 
   // Function to handle sign in when form is submitted
   const handleSignIn = async (e) => {
@@ -77,6 +83,7 @@ export function SignIn() {
               name="email"
               onChange={handleChange}
               size="lg"
+              ref={emailRef}
             />
             {/* Password input field */}
             <Input
@@ -85,6 +92,7 @@ export function SignIn() {
               name="password"
               onChange={handleChange}
               size="lg"
+              ref={passwordRef}
             />
             {/* Remember Me checkbox */}
             <div className="-ml-2.5">
@@ -95,6 +103,26 @@ export function SignIn() {
             {/* Sign In button */}
             <Button variant="gradient" fullWidth onClick={handleSignIn}>
               Sign In
+            </Button>
+            {/* Demo sign in button */}
+            <Button
+              variant="gradient"
+              color="green"
+              fullWidth
+              className="mt-3"
+              onClick={() => {
+                // set the values in UI
+                emailRef.current.querySelector("input").value = demoEmail;
+                passwordRef.current.querySelector("input").value = demoPassword;
+
+                // set value in formdata
+                setFormData({
+                  email: demoEmail,
+                  password: demoPassword,
+                });
+              }}
+            >
+              Demo Sign In
             </Button>
             {/* Sign up link */}
             <Typography variant="small" className="mt-6 flex justify-center">
