@@ -55,6 +55,18 @@ export function SignIn() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  // function to toggle password visibility
+  const togglePassword = (e) => {
+    const x = passwordRef.current.querySelector("input");
+    console.log(x.type);
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  };
+
   return (
     <>
       <img
@@ -94,9 +106,9 @@ export function SignIn() {
               size="lg"
               ref={passwordRef}
             />
-            {/* Remember Me checkbox */}
+            {/* Toggle password visibility checkbox */}
             <div className="-ml-2.5">
-              <Checkbox label="Remember Me" />
+              <Checkbox label="Show password" onChange={togglePassword} />
             </div>
           </CardBody>
           <CardFooter className="pt-0">
