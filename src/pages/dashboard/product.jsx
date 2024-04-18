@@ -50,12 +50,28 @@ export function Product() {
       console.error("Error deleting row:", error);
     } else {
       console.log("Row deleted successfully:", data);
+      fetchProductData();
     }
   }
 
   /**
    * This is a React useEffect hook that fetches data asynchronously and updates state variables.
    */
+
+  async function fetchProductData() {
+    const fetchedData = await fetchData();
+    // console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
+    setProductData(fetchedData);
+    console.log("🚀 ~ fetchProductData ~ fetchedData:");
+
+    // map over the data print individual product data
+    // productData.map((item, index) => {
+    //   // console.log(item.product_info.productName);
+    // });
+
+    // setIsLoading(false);
+  }
+
   useEffect(() => {
     // setIsLoading(true);
     async function fetchProductData() {
